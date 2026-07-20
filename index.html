@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZOLTAR — fuzz/doom-trio från Uppsala</title>
+<meta name="description" content="Zoltar är en fuzz/doom-trio från Uppsala. Tung, hypnotisk och riffbaserad psykrock — lyssna på Trollkarl EP och hitta oss på Bandcamp, Spotify, Instagram och Facebook.">
+
+<!-- Open Graph / delnings-kort -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="ZOLTAR">
+<meta property="og:description" content="Fuzz/doom-trio från Uppsala. Tung, hypnotisk, riffbaserad psykrock.">
+<meta property="og:url" content="https://www.zoltar.band/">
+<meta property="og:image" content="https://www.zoltar.band/zoltar-logo.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230d0a12'/%3E%3Ctext x='32' y='46' font-family='Arial Black,sans-serif' font-size='40' font-weight='900' fill='%23ff7a18' text-anchor='middle'%3EZ%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MusicGroup",
+  "name": "Zoltar",
+  "url": "https://www.zoltar.band/",
+  "genre": ["Stoner Rock", "Doom", "Psychedelic Rock"],
+  "foundingLocation": { "@type": "Place", "name": "Uppsala, Sweden" },
+  "member": [
+    { "@type": "Person", "name": "Crille Lampa", "roleName": "Vocals & Bass" },
+    { "@type": "Person", "name": "David Åberg", "roleName": "Vocals & Guitar" },
+    { "@type": "Person", "name": "Elias Karlstrand", "roleName": "Drums" }
+  ],
+  "sameAs": [
+    "https://zoltarband.bandcamp.com/",
+    "https://open.spotify.com/artist/5DhYnyFTWXJA486Mv9QRQE",
+    "https://www.instagram.com/zoltarband/",
+    "https://www.facebook.com/Zoltar.the.band/",
+    "https://www.youtube.com/channel/UCeuq8ECr5zY3O-V928frJbA",
+    "https://epk.recordunion.com/zoltar"
+  ]
+}
+</script>
+
+<style>
+:root {
+  --bg: #0d0a12;
+  --bg-2: #171021;
+  --ink: #ece6da;
+  --dim: #9a8fa8;
+  --orange: #ff7a18;
+  --purple: #8a5cf6;
+  --line: rgba(236, 230, 218, .14);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── Hero ─────────────────────────────────────────── */
+.hero {
+  position: relative;
+  min-height: 72vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 8vh 24px 48px;
+  isolation: isolate;
+  background:
+    radial-gradient(120% 90% at 70% 0%, rgba(138, 92, 246, .35), transparent 55%),
+    radial-gradient(90% 70% at 15% 100%, rgba(255, 122, 24, .22), transparent 60%),
+    var(--bg-2);
+}
+.hero-photo {
+  position: absolute; inset: 0; z-index: -1;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  filter: saturate(.85) contrast(1.05);
+}
+.hero::after {                 /* mörk gradient så typon alltid är läsbar */
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  background: linear-gradient(180deg, rgba(13,10,18,.25) 0%, rgba(13,10,18,.55) 55%, var(--bg) 100%);
+  pointer-events: none;
+}
+.hero > * { position: relative; z-index: 1; }
+.hero h1 { line-height: 0; mix-blend-mode: lighten; } /* svart logo-botten smälter in i mörka heron */
+.hero .logo {
+  display: block;
+  width: min(640px, 92vw);
+  height: auto;
+}
+.hero .tagline {
+  margin-top: 18px;
+  max-width: 34ch;
+  font-size: clamp(1rem, 2.4vw, 1.3rem);
+  font-weight: 500;
+  color: var(--ink);
+}
+.hero .tagline em { color: var(--orange); font-style: normal; }
+
+/* ── Layout ───────────────────────────────────────── */
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+section { padding: 56px 0; }
+h2 {
+  font-family: "Anton", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: 1.1rem;
+  color: var(--orange);
+  margin-bottom: 20px;
+}
+
+/* ── Bio ──────────────────────────────────────────── */
+.bio p { font-size: 1.08rem; color: var(--ink); max-width: 58ch; }
+
+/* ── Player ───────────────────────────────────────── */
+.player iframe {
+  width: 100%; height: 241px; border: 0;
+  border-radius: 10px;
+}
+
+/* ── Länkar ───────────────────────────────────────── */
+.links ul { list-style: none; display: grid; gap: 12px; }
+.links a {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+  transition: border-color .15s, background .15s, transform .15s;
+  background: rgba(255,255,255,.02);
+}
+.links a:hover {
+  border-color: var(--orange);
+  background: rgba(255, 122, 24, .07);
+  transform: translateX(4px);
+}
+.links a small { font-weight: 400; color: var(--dim); font-size: .85rem; text-align: right; }
+.links a.epk { border-color: rgba(138, 92, 246, .5); }
+.links a.epk:hover { border-color: var(--purple); background: rgba(138, 92, 246, .09); }
+
+/* ── Booking ──────────────────────────────────────── */
+.booking p { color: var(--dim); max-width: 52ch; }
+.booking a { color: var(--orange); }
+
+/* ── Footer ───────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 36px 0 48px;
+  color: var(--dim);
+  font-size: .9rem;
+}
+footer .members { margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img class="hero-photo" src="press-photo.jpg" alt="" onerror="this.remove()">
+  <h1><img class="logo" src="zoltar-logo.jpg" alt="Zoltar" width="1027" height="242"></h1>
+  <p class="tagline">Fuzz/doom-trio från Uppsala. <em>Heavy, hypnotic, riff-driven psych rock from Sweden.</em></p>
+</header>
+
+<main class="wrap">
+
+  <section class="bio">
+    <h2>Om bandet</h2>
+    <p>Med rötterna i klassisk stonerrock och blicken vänd mot kosmos skapar Zoltar en tung
+    och hypnotisk brygd av riffbaserad psykrock. Bandets sound är rått, svängigt och fullt
+    av mystik — något som cementerades med releasen av <strong>Trollkarl&nbsp;EP</strong>.
+    Zoltar är här för att dra ner dig i ett gung av distade basar och psykedeliska vibrationer.</p>
+  </section>
+
+  <section class="player">
+    <h2>Lyssna</h2>
+    <iframe title="Trollkarl EP — Zoltar på Bandcamp" loading="lazy"
+      src="https://bandcamp.com/EmbeddedPlayer/album=3037913297/size=large/bgcol=0d0a12/linkcol=ff7a18/artwork=small/transparent=true/">
+    </iframe>
+  </section>
+
+  <section class="links">
+    <h2>Hitta oss</h2>
+    <ul>
+      <li><a href="https://zoltarband.bandcamp.com/">Bandcamp <small>musik &amp; merch</small></a></li>
+      <li><a href="https://open.spotify.com/artist/5DhYnyFTWXJA486Mv9QRQE">Spotify <small>streama</small></a></li>
+      <li><a href="https://www.youtube.com/channel/UCeuq8ECr5zY3O-V928frJbA">YouTube <small>video</small></a></li>
+      <li><a href="https://www.instagram.com/zoltarband/">Instagram <small>@zoltarband</small></a></li>
+      <li><a href="https://www.facebook.com/Zoltar.the.band/">Facebook <small>spelningar &amp; nyheter</small></a></li>
+      <li><a class="epk" href="https://epk.recordunion.com/zoltar">Press kit / EPK <small>bio, foton, livedatum</small></a></li>
+    </ul>
+  </section>
+
+  <section class="booking">
+    <h2>Bokning &amp; press</h2>
+    <p>Aktuella livedatum och kontaktformulär finns i vårt
+    <a href="https://epk.recordunion.com/zoltar">press&nbsp;kit</a>.</p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="members">Crille Lampa — sång &amp; bas · David Åberg — sång &amp; gitarr · Elias Karlstrand — trummor</p>
+    <p>Zoltar · Uppsala, Sverige</p>
+  </div>
+</footer>
+
+</body>
+</html>
