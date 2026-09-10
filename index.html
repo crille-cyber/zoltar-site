@@ -90,7 +90,29 @@ body {
   background: linear-gradient(180deg, rgba(13,10,18,.25) 0%, rgba(13,10,18,.55) 55%, var(--bg) 100%);
   pointer-events: none;
 }
-.hero > * { position: relative; z-index: 1; }
+.hero > *:not(.hero-photo) { position: relative; z-index: 1; }  /* foto:t är bakgrundslagret — får EJ dras in i flödet (samma specificitet som .hero-photo, annars vinner denna) */
+/* Det är BREDD/HÖJD-förhållandet, inte px-bredden, som avgör om cover kapar
+   bort bandet. Heron är 100vw bred; när viewporten är stående blir hero-boxen
+   mycket kvadratigare än foto:ts 2.33:1, och cover måste då kapa BREDDEN — de
+   två yttre medlemmarna försvinner och trion ser ut som ett porträtt (mätt:
+   375×812 → 27% av bredden kvar, 768×1024 → 44%, båda ytterkanterna borta).
+   Visa hela frame:n som ett band i överkant i stället, maskad så underkanten
+   tonar in i hero-gradienten. Höjden följer foto:ts egen aspect + plats åt
+   logo/tagline, så bandet aldrig blir högre än heron. */
+@media (max-aspect-ratio: 3/2) {
+  .hero {
+    min-height: calc(100vw / 2.334 + 250px);
+    padding-top: 0;
+    overflow: hidden;
+  }
+  .hero-photo {
+    height: auto;
+    bottom: auto;
+    aspect-ratio: 2000 / 857;
+    -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+            mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+  }
+}
 .hero h1 { line-height: 0; mix-blend-mode: lighten; } /* svart logo-botten smälter in i mörka heron */
 .hero .logo {
   display: block;
